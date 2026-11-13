@@ -1,0 +1,44 @@
+
+butterfly (bsb guaranteed price 7.568)
+  bs_ref          prior   7.808  worst   9.225  (sigma 0.300)
+  bsb             prior   7.484  worst   8.169  (sigma 0.070)
+  posterior_mean  prior   7.308  worst   8.001  (sigma 0.070)
+  oracle          prior   7.254  worst   7.874  (sigma 0.070)
+  gru_s0          prior   7.319  worst   8.065  (sigma 0.070)
+  gru_s1          prior   7.285  worst   8.033  (sigma 0.070)
+  gru_s2          prior   7.302  worst   8.049  (sigma 0.070)
+  mlp_s0          prior   7.377  worst   8.527  (sigma 0.300)
+  mlp_s1          prior   7.352  worst   8.263  (sigma 0.300)
+  mlp_s2          prior   7.342  worst   8.049  (sigma 0.070)
+  value_of_learning_prior_cvar               +0.182 +/- 0.010
+  gru_minus_posterior_mean_prior_cvar        -0.005 +/- 0.010
+  value_of_memory_prior_cvar                 +0.055 +/- 0.008
+  value_of_learning_worst_cvar               +0.120 +/- 0.009
+  gru_minus_posterior_mean_worst_cvar        +0.048 +/- 0.009
+  value_of_memory_worst_cvar                 +0.231 +/- 0.133
+
+call (bsb guaranteed price 5.979)
+  bs_ref          prior   5.695  worst  10.442  (sigma 0.300)
+  bsb             prior   5.379  worst   7.454  (sigma 0.300)
+  posterior_mean  prior   5.288  worst   7.755  (sigma 0.300)
+  oracle          prior   5.249  worst   7.456  (sigma 0.300)
+  gru_s0          prior   5.253  worst   8.667  (sigma 0.300)
+  gru_s1          prior   5.248  worst   8.666  (sigma 0.300)
+  gru_s2          prior   5.254  worst   8.756  (sigma 0.300)
+  mlp_s0          prior   5.249  worst   8.466  (sigma 0.300)
+  mlp_s1          prior   5.246  worst   8.423  (sigma 0.300)
+  mlp_s2          prior   5.244  worst   8.445  (sigma 0.300)
+  value_of_learning_prior_cvar               +0.127 +/- 0.002
+  gru_minus_posterior_mean_prior_cvar        -0.036 +/- 0.002
+  value_of_memory_prior_cvar                 -0.005 +/- 0.002
+  value_of_learning_worst_cvar               -1.243 +/- 0.030
+  gru_minus_posterior_mean_worst_cvar        +0.941 +/- 0.030
+  value_of_memory_worst_cvar                 -0.252 +/- 0.032
+
+decision rules: {
+ "H1_butterfly_prior": true,
+ "H1_butterfly_worst": true,
+ "H1_call_worst_within_2se_of_zero": false,
+ "H2_gru_not_worse_than_mlp": true,
+ "H2_gru_not_worse_than_posterior_mean": true
+}

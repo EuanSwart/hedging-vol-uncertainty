@@ -58,7 +58,7 @@ hedging/       library: config, payoffs, simulate, bsb, baselines, networks, los
 run_*.py       one script per step of the plan
 tests/         unit tests
 data/          spy and vix closes, calibration.json
-results/       json results, figures and tables per scale
+results/       json results, figures, tables and console logs per scale (docs/results_summary.md reads them)
 runs/          checkpoints and training logs per scale
 ```
 

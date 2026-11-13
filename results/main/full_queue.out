@@ -1,0 +1,12 @@
+10 runs to do at scale 'main'
+started gru butterfly seed 1 (free ram 3.6 GB)
+started gru butterfly seed 2 (free ram 3.5 GB)
+started gru call seed 0 (free ram 4.1 GB)
+started gru call seed 1 (free ram 3.6 GB)
+started gru call seed 2 (free ram 4.0 GB)
+started mlp butterfly seed 1 (free ram 4.0 GB)
+started mlp butterfly seed 2 (free ram 4.0 GB)
+started mlp call seed 0 (free ram 3.8 GB)
+started mlp call seed 1 (free ram 3.9 GB)
+started mlp call seed 2 (free ram 3.9 GB)
+all runs finished

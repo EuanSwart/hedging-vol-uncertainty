@@ -1,0 +1,16 @@
+
+butterfly: 93 windows, 5% outside the band
+  bs_ref          std  2.171  mean  +4.518  vs bsb -0.109 [-0.360, +0.172]  top third  3.567
+  bs_vix          std  2.056  mean  +4.197  vs bsb -0.225 [-0.544, +0.127]  top third  3.070
+  bsb             std  2.281  mean  +4.610  vs bsb +0.000 [+0.000, +0.000]  top third  3.688
+  posterior_mean  std  1.750  mean  +4.431  vs bsb -0.531 [-0.978, -0.026]  top third  2.427
+  gru             std  2.111  mean  +4.625  vs bsb -0.170 [-0.656, +0.366]  top third  3.184
+  mlp             std  2.220  mean  +4.591  vs bsb -0.061 [-0.303, +0.227]  top third  3.440
+
+call: 93 windows, 5% outside the band
+  bs_ref          std  1.267  mean  +3.335  vs bsb -0.078 [-0.420, +0.224]  top third  1.388
+  bs_vix          std  1.297  mean  +3.442  vs bsb -0.048 [-0.260, +0.124]  top third  1.457
+  bsb             std  1.345  mean  +3.500  vs bsb +0.000 [+0.000, +0.000]  top third  1.451
+  posterior_mean  std  1.384  mean  +3.380  vs bsb +0.039 [-0.099, +0.175]  top third  1.455
+  gru             std  1.188  mean  +3.440  vs bsb -0.157 [-0.403, +0.065]  top third  1.186
+  mlp             std  1.289  mean  +3.469  vs bsb -0.057 [-0.166, +0.067]  top third  1.369
