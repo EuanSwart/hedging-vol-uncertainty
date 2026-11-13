@@ -1,0 +1,36 @@
+{
+  "band": [
+    0.07,
+    0.3
+  ],
+  "a0": 2.220875698606368,
+  "b0": 0.027829827302824153,
+  "sigma_ref": 0.13241641890982167,
+  "calibration_period": "2010-01-04 to 2017-12-31",
+  "diagnostics_calibration_half": {
+    "n_quarters": 31,
+    "quantiles_5_25_50_75_95": [
+      0.0730966135956877,
+      0.09561951863424782,
+      0.12725860399225525,
+      0.14443968460369971,
+      0.25379089051763887
+    ],
+    "corr_log_vol_consecutive_quarters": 0.41894463028905793,
+    "corr_log_vol_first_vs_second_half": 0.6452255217933311,
+    "median_abs_log_ratio_halves": 0.19476838814947026
+  },
+  "diagnostics_full_sample": {
+    "n_quarters": 63,
+    "quantiles_5_25_50_75_95": [
+      0.06975321111931618,
+      0.10528805621795703,
+      0.1290809390041183,
+      0.1684583330481601,
+      0.2838444241481297
+    ],
+    "corr_log_vol_consecutive_quarters": 0.25872839626417365,
+    "corr_log_vol_first_vs_second_half": 0.5767782063664857,
+    "median_abs_log_ratio_halves": 0.21562615406958802
+  }
+}

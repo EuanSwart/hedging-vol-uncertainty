@@ -1,0 +1,10 @@
+# versions used for the reported results (python 3.11, cpu only)
+numpy==2.2.4
+scipy==1.15.2
+pandas==2.2.3
+torch==2.6.0
+matplotlib==3.10.1
+psutil==7.0.0
+pytest==9.1.1
+# only needed to re-download the data, not to reproduce the results
+yfinance==0.2.55
