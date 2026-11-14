@@ -112,3 +112,11 @@ def test_bsb_hedge_has_no_shortfall_above_its_price_for_constant_volatility():
     S = gbm_from_noise(torch.randn(20_000, N_STEPS, generator=make_generator(4)), 0.20)
     x = shortfall("butterfly", S, bsb_delta_path("butterfly", S, CALIB.band))
     assert cvar(x) < bsb_price("butterfly", CALIB.band) + 0.5
+
+
+def test_uniform_prior_has_a_heavier_upper_tail_and_stays_in_the_band():
+    gen = make_generator(6)
+    uni = sample_prior_sigma(100_000, gen, CALIB, prior="uniform")
+    cal = sample_prior_sigma(100_000, gen, CALIB, prior="calibrated")
+    assert float(uni.min()) >= 0.07 and float(uni.max()) <= 0.30
+    assert float((uni > 0.25).float().mean()) > 5 * float((cal > 0.25).float().mean())

@@ -11,16 +11,17 @@ import time
 import torch
 
 from hedging.baselines import bs_delta_path
-from hedging.config import ALPHA, RUNS_DIR, SCALES, load_calibration
+from hedging.config import ALPHA, PRIORS, RUNS_DIR, SCALES, load_calibration
 from hedging.losses import cvar, cvar_training_loss, shortfall
-from hedging.networks import checkpoint_path, count_parameters, make_hedger
+from hedging.networks import checkpoint_path, count_parameters, make_hedger, run_tag
 from hedging.simulate import make_generator, simulate_prior_paths
 
 
-def train(kind: str, name: str, seed: int, scale: str, log_every: int = 50, verbose: bool = False) -> dict:
+def train(kind: str, name: str, seed: int, scale: str, prior: str = "calibrated", log_every: int = 50,
+          verbose: bool = False) -> dict:
     sc = SCALES[scale]
-    ckpt = checkpoint_path(scale, kind, name, seed)
-    log_file = RUNS_DIR / scale / "logs" / f"{kind}_{name}_s{seed}.json"
+    ckpt = checkpoint_path(scale, kind, name, seed, prior)
+    log_file = RUNS_DIR / scale / "logs" / f"{run_tag(kind, name, seed, prior)}.json"
     if ckpt.exists() and log_file.exists():             # finished runs are never repeated
         return json.loads(log_file.read_text())
     ckpt.parent.mkdir(parents=True, exist_ok=True)
@@ -38,7 +39,7 @@ def train(kind: str, name: str, seed: int, scale: str, log_every: int = 50, verb
 
     history, t0 = [], time.time()
     for step in range(sc.steps):
-        S, _ = simulate_prior_paths(sc.batch, gen, calib)   # sigma is drawn from the prior, never shown to the network
+        S, _ = simulate_prior_paths(sc.batch, gen, calib, prior=prior)   # sigma is drawn from the prior, never shown to the network
         x = shortfall(name, S, model(S))
         if step == 0:                                       # start the threshold at the empirical value-at-risk
             with torch.no_grad():
@@ -56,7 +57,7 @@ def train(kind: str, name: str, seed: int, scale: str, log_every: int = 50, verb
 
     torch.save(model.state_dict(), ckpt)
     reference = cvar(shortfall(name, S, bs_delta_path(name, S, calib.sigma_ref)))   # same batch, plain black-scholes
-    meta = dict(kind=kind, payoff=name, seed=seed, scale=scale, batch=sc.batch, steps=sc.steps,
+    meta = dict(kind=kind, payoff=name, seed=seed, scale=scale, prior=prior, batch=sc.batch, steps=sc.steps,
                 n_parameters=count_parameters(model), last_batch_bs_reference_cvar=reference,
                 seconds=round(time.time() - t0, 1), history=history)
     log_file.write_text(json.dumps(meta, indent=1))
@@ -69,6 +70,7 @@ if __name__ == "__main__":
     ap.add_argument("--payoff", choices=["butterfly", "call"], required=True)
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--scale", choices=list(SCALES), default="main")
+    ap.add_argument("--prior", choices=list(PRIORS), default="calibrated")
     args = ap.parse_args()
-    out = train(args.kind, args.payoff, args.seed, args.scale, verbose=True)
+    out = train(args.kind, args.payoff, args.seed, args.scale, args.prior, verbose=True)
     print(f"done in {out['seconds']} s, {out['n_parameters']} parameters")

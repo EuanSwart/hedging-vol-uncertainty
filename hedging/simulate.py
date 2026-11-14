@@ -18,9 +18,14 @@ def make_generator(seed: int) -> torch.Generator:
     return g
 
 
-def sample_prior_sigma(n_paths: int, gen: torch.Generator, calib: Calibration) -> Tensor:
-    """draw sigma from the inverse-gamma prior on sigma^2, truncated to the band (inverse-cdf sampling)."""
+def sample_prior_sigma(n_paths: int, gen: torch.Generator, calib: Calibration, prior: str = "calibrated") -> Tensor:
+    """draw sigma from the prior: the inverse-gamma on sigma^2 truncated to the band (inverse-cdf sampling),
+    or, for prior='uniform', uniform on the band, which puts far more mass on high volatility."""
     lo, hi = calib.band
+    if prior == "uniform":
+        return (lo + (hi - lo) * torch.rand(n_paths, generator=gen)).float()
+    if prior != "calibrated":
+        raise ValueError(f"unknown prior {prior!r}")
     a, b = calib.a0, calib.b0
     cdf = lambda v: gammaincc(a, b / v)                # cdf of the inverse gamma at variance v
     u = torch.rand(n_paths, generator=gen, dtype=torch.float64).numpy()
@@ -41,9 +46,10 @@ def gbm_from_noise(z: Tensor, sigma, T: float = T) -> Tensor:
     return S0 * torch.exp(log_s)
 
 
-def simulate_prior_paths(n_paths: int, gen: torch.Generator, calib: Calibration, n_steps: int = N_STEPS):
+def simulate_prior_paths(n_paths: int, gen: torch.Generator, calib: Calibration, n_steps: int = N_STEPS,
+                         prior: str = "calibrated"):
     """paths whose volatility is drawn once per path from the prior; returns (S, sigma)."""
-    sigma = sample_prior_sigma(n_paths, gen, calib)
+    sigma = sample_prior_sigma(n_paths, gen, calib, prior)
     z = torch.randn(n_paths, n_steps, generator=gen)
     return gbm_from_noise(z, sigma), sigma
 

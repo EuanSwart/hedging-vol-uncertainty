@@ -1,0 +1,7 @@
+bsb              calibrated prior 5.379  uniform prior 6.349  worst case 7.454
+posterior_mean   calibrated prior 5.288  uniform prior 6.501  worst case 7.755
+oracle           calibrated prior 5.249  uniform prior 6.375  worst case 7.456
+gru_calibrated   calibrated_prior 5.251+/-0.002  uniform_prior 6.775+/-0.011  worst_case 8.696+/-0.030
+gru_uniform      calibrated_prior 5.433+/-0.014  uniform_prior 6.382+/-0.008  worst_case 7.747+/-0.010
+mlp_calibrated   calibrated_prior 5.247+/-0.001  uniform_prior 6.687+/-0.005  worst_case 8.445+/-0.012
+mlp_uniform      calibrated_prior 5.368+/-0.001  uniform_prior 6.373+/-0.004  worst_case 7.582+/-0.009

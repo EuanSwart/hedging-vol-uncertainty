@@ -98,6 +98,47 @@ def write_tables(sim: dict, real: dict, path):
     path.write_text("\n".join(lines))
 
 
+def pm(mean_se: tuple) -> str:
+    """'mean $\\pm$ se' with two decimals."""
+    return f"{mean_se[0]:.2f}\\,$\\pm$\\,{mean_se[1]:.2f}"
+
+
+def write_latex_tables(sim: dict, real: dict, out) -> None:
+    """tabular fragments for the report (the report wraps them in table environments)."""
+    rows = [("BS at prior mean", "bs_ref"), ("BSB", "bsb"), ("Posterior-mean", "posterior_mean"),
+            ("MLP", "mlp"), ("GRU", "gru"), ("Oracle", "oracle")]
+    lines = [r"\begin{tabular}{@{}lcccc@{}}", r"\toprule",
+             r" & \multicolumn{2}{c}{Butterfly} & \multicolumn{2}{c}{Call} \\", r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
+             r"Hedger & prior & worst case & prior & worst case \\", r"\midrule"]
+    for name, key in rows:
+        cells = []
+        for payoff in ("butterfly", "call"):
+            for metric in ("prior_cvar", "worst_cvar"):
+                if key in ("mlp", "gru"):
+                    cells.append(pm(sim[payoff]["per_kind"][key][metric]))
+                else:
+                    cells.append(f"{sim[payoff]['hedgers'][key][metric]:.2f}")
+        lines.append(f"{name} & " + " & ".join(cells) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    (out / "tab_sim.tex").write_text("\n".join(lines) + "\n")
+
+    rows = [("BSB", "bsb"), ("BS at VIX", "bs_vix"), ("BS at prior mean", "bs_ref"), ("MLP", "mlp"), ("GRU", "gru"),
+            ("Posterior-mean", "posterior_mean")]
+    lines = [r"\begin{tabular}{@{}lcccc@{}}", r"\toprule",
+             r" & \multicolumn{2}{c}{Butterfly} & \multicolumn{2}{c}{Call} \\", r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
+             r"Hedger & std & minus BSB & std & minus BSB \\", r"\midrule"]
+    for name, key in rows:
+        cells = []
+        for payoff in ("butterfly", "call"):
+            h = real[payoff]["hedgers"][key]
+            cells.append(f"{h['std']:.2f}")
+            lo, hi = h["std_minus_bsb_ci95"]
+            cells.append("--" if key == "bsb" else f"{h['std_minus_bsb']:+.2f} [{lo:+.2f}, {hi:+.2f}]")
+        lines.append(f"{name} & " + " & ".join(cells) + r" \\")
+    lines += [r"\bottomrule", r"\end{tabular}"]
+    (out / "tab_real.tex").write_text("\n".join(lines) + "\n")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--scale", choices=list(SCALES), default="main")
@@ -110,4 +151,5 @@ if __name__ == "__main__":
     fig_hedge_paths(calib, a.scale, out / "fig_hedge_paths.png")
     fig_real(real, out / "fig_real.png")
     write_tables(sim, real, out / "tables.md")
+    write_latex_tables(sim, real, out)
     print("wrote figures and tables to", out)

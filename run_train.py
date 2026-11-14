@@ -14,14 +14,14 @@ import time
 
 import psutil
 
-from hedging.config import RUNS_DIR, SCALES, SEEDS, ROOT
+from hedging.config import PRIORS, RUNS_DIR, SCALES, SEEDS, ROOT
 from hedging.keepawake import KeepAwake
-from hedging.networks import checkpoint_path
+from hedging.networks import checkpoint_path, run_tag
 
 
-def main(kinds, payoffs, seeds, scale, workers, min_free_gb, pause_gb):
+def main(kinds, payoffs, seeds, scale, workers, min_free_gb, pause_gb, prior):
     jobs = [(k, p, s) for k, p, s in itertools.product(kinds, payoffs, seeds)
-            if not checkpoint_path(scale, k, p, s).exists()]
+            if not checkpoint_path(scale, k, p, s, prior).exists()]
     print(f"{len(jobs)} runs to do at scale '{scale}'", flush=True)
     running, suspended, last_log = [], [], 0.0
     mem_log = open(RUNS_DIR / "memory_log.csv", "a")
@@ -45,9 +45,9 @@ def main(kinds, payoffs, seeds, scale, workers, min_free_gb, pause_gb):
             print(f"free ram {free_gb:.2f} GB: resumed {job}", flush=True)
         elif jobs and not suspended and len(running) < workers and free_gb >= min_free_gb:
             kind, name, seed = jobs.pop(0)
-            log = open(RUNS_DIR / f"{scale}_{kind}_{name}_s{seed}.out", "w")
+            log = open(RUNS_DIR / f"{scale}_{run_tag(kind, name, seed, prior)}.out", "w")
             proc = subprocess.Popen([sys.executable, "-m", "hedging.train", "--kind", kind, "--payoff", name,
-                                     "--seed", str(seed), "--scale", scale], cwd=ROOT, stdout=log,
+                                     "--seed", str(seed), "--scale", scale, "--prior", prior], cwd=ROOT, stdout=log,
                                     stderr=subprocess.STDOUT, env={**os.environ, "EXP_THREADS": "1"})
             running.append(((kind, name, seed), proc))
             print(f"started {kind} {name} seed {seed} (free ram {free_gb:.1f} GB)", flush=True)
@@ -64,7 +64,8 @@ if __name__ == "__main__":
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--min-free-gb", type=float, default=1.5)
     ap.add_argument("--pause-gb", type=float, default=0.8)
+    ap.add_argument("--prior", choices=list(PRIORS), default="calibrated")
     a = ap.parse_args()
     RUNS_DIR.mkdir(exist_ok=True)
     with KeepAwake():
-        main(a.kinds, a.payoffs, a.seeds, a.scale, a.workers, a.min_free_gb, a.pause_gb)
+        main(a.kinds, a.payoffs, a.seeds, a.scale, a.workers, a.min_free_gb, a.pause_gb, a.prior)

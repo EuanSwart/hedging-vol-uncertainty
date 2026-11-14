@@ -97,13 +97,18 @@ def count_parameters(model: nn.Module) -> int:
     return sum(p.numel() for p in model.parameters())
 
 
-def checkpoint_path(scale: str, kind: str, name: str, seed: int):
-    return RUNS_DIR / scale / "ckpt" / f"{kind}_{name}_s{seed}.pt"
+def run_tag(kind: str, name: str, seed: int, prior: str = "calibrated") -> str:
+    """file stem of a run; the default prior keeps the names of the main experiment unchanged."""
+    return f"{kind}_{name}_s{seed}" if prior == "calibrated" else f"{kind}_{name}_{prior}_s{seed}"
 
 
-def load_network(scale: str, kind: str, name: str, seed: int, calib: Calibration) -> Hedger:
+def checkpoint_path(scale: str, kind: str, name: str, seed: int, prior: str = "calibrated"):
+    return RUNS_DIR / scale / "ckpt" / f"{run_tag(kind, name, seed, prior)}.pt"
+
+
+def load_network(scale: str, kind: str, name: str, seed: int, calib: Calibration, prior: str = "calibrated") -> Hedger:
     model = make_hedger(kind, name, calib)
-    model.load_state_dict(torch.load(checkpoint_path(scale, kind, name, seed), weights_only=True))
+    model.load_state_dict(torch.load(checkpoint_path(scale, kind, name, seed, prior), weights_only=True))
     return model.eval()
 
 

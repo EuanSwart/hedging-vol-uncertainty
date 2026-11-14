@@ -49,3 +49,19 @@ standard deviation of the shortfall on butterfly windows (95% moving-block boots
 - the worst-case sigma on the butterfly is the bottom of the band (0.07) for bsb, the posterior-mean hedge and the gru; the bsb measured premium there (8.17) exceeds its guaranteed price (7.57) because of daily trading.
 - the posterior-mean hedge and the oracle are not cvar-optimal in discrete time, so learned hedgers can come out below them.
 - the checks above were reviewed after the run; no inconsistency pointing to an implementation error was found (martingale, no look-ahead, bsb price, oracle ordering are covered by unit tests or by the go/no-go step).
+
+## addendum: where the gru stops, and the heavier-tailed prior for the call
+
+- profile over true sigma (butterfly): the gru is within 0.2 of the oracle for sigma <= 0.10 but 0.8 above it at sigma = 0.185 and 3.0 above it at sigma = 0.30, where it behaves almost like bsb; the posterior-mean hedge stays within 0.3 of the oracle throughout. the prior puts 9% of its mass above sigma = 0.20 and 2.7% above 0.25. "the gru matches the posterior-mean hedge" therefore holds for the prior loss only. the scalar worst case hides this because the butterfly's worst volatility is the bottom of the band (0.07) for most hedgers.
+- call, networks retrained on a uniform prior over the band (22% of mass above sigma = 0.25), 3 seeds, `run_prior_ablation.py`:
+
+| hedger | calibrated-prior loss | uniform-prior loss | worst case |
+|---|---|---|---|
+| bsb | 5.38 | 6.35 | 7.45 |
+| oracle | 5.25 | 6.38 | 7.46 |
+| gru, calibrated prior | 5.251 +/- 0.002 | 6.775 +/- 0.011 | 8.696 +/- 0.030 |
+| gru, uniform prior | 5.433 +/- 0.014 | 6.382 +/- 0.008 | 7.747 +/- 0.010 |
+| mlp, calibrated prior | 5.247 +/- 0.001 | 6.687 +/- 0.005 | 8.445 +/- 0.012 |
+| mlp, uniform prior | 5.368 +/- 0.001 | 6.373 +/- 0.004 | 7.582 +/- 0.009 |
+
+  the call's worst-case failure was a training-distribution effect: with the heavier tail the worst case drops by about 10% (to within 0.1 to 0.3 of the bsb floor, which nothing beats) at a cost of 2 to 3% on the calibrated prior. the mlp is as good as the gru here, so memory still buys nothing on the call.

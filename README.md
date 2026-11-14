@@ -38,6 +38,8 @@ python run_train.py --scale main     # 12 networks, 2 single-thread workers (abo
 python run_evaluate.py --scale main  # simulation tests and decision rules
 python run_real.py --scale main      # real-data test
 python run_probe.py --scale main     # optional hidden-state probe
+python run_train.py --scale main --payoffs call --prior uniform --workers 1   # heavier-tailed prior for the call
+python run_prior_ablation.py --scale main    # compares the two training priors
 python run_figures.py --scale main   # figures and tables in results/main/
 ```
 

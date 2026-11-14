@@ -25,9 +25,10 @@ class SimTestSets:
     grid_S: list
 
 
-def build_test_sets(calib: Calibration, n_prior: int, n_grid_paths: int, seed: int = TEST_SEED) -> SimTestSets:
+def build_test_sets(calib: Calibration, n_prior: int, n_grid_paths: int, seed: int = TEST_SEED,
+                    prior: str = "calibrated") -> SimTestSets:
     gen = make_generator(seed)
-    prior_S, prior_sigma = simulate_prior_paths(n_prior, gen, calib)
+    prior_S, prior_sigma = simulate_prior_paths(n_prior, gen, calib, prior=prior)
     z = torch.randn(n_grid_paths, N_STEPS, generator=gen)
     grid_sigma = np.linspace(calib.band[0], calib.band[1], N_GRID).round(4).tolist()
     return SimTestSets(prior_S, prior_sigma, grid_sigma, [gbm_from_noise(z, s) for s in grid_sigma])
@@ -44,14 +45,15 @@ def free_hedges(name: str, calib: Calibration) -> dict:
     }
 
 
-def network_hedges(name: str, calib: Calibration, scale: str, kinds=("gru", "mlp"), seeds=(0, 1, 2)) -> dict:
+def network_hedges(name: str, calib: Calibration, scale: str, kinds=("gru", "mlp"), seeds=(0, 1, 2),
+                   prior: str = "calibrated") -> dict:
     """trained networks that exist on disk, labelled like 'gru_s0'."""
     from hedging.networks import checkpoint_path
     out = {}
     for kind in kinds:
         for seed in seeds:
-            if checkpoint_path(scale, kind, name, seed).exists():
-                model = load_network(scale, kind, name, seed, calib)
+            if checkpoint_path(scale, kind, name, seed, prior).exists():
+                model = load_network(scale, kind, name, seed, calib, prior)
                 out[f"{kind}_s{seed}"] = (lambda m: lambda S, sigma: network_delta(m, S))(model)
     return out
 
