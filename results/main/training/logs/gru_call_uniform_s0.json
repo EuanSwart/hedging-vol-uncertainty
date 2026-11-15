@@ -1,0 +1,269 @@
+{
+ "kind": "gru",
+ "payoff": "call",
+ "seed": 0,
+ "scale": "main",
+ "prior": "uniform",
+ "batch": 4096,
+ "steps": 2500,
+ "n_parameters": 1025,
+ "last_batch_bs_reference_cvar": 7.944673538208008,
+ "seconds": 455.9,
+ "history": [
+  {
+   "step": 0,
+   "train_cvar": 7.884827136993408,
+   "seconds": 0.2
+  },
+  {
+   "step": 50,
+   "train_cvar": 7.6326446533203125,
+   "seconds": 9.1
+  },
+  {
+   "step": 100,
+   "train_cvar": 6.995004177093506,
+   "seconds": 17.9
+  },
+  {
+   "step": 150,
+   "train_cvar": 6.907785892486572,
+   "seconds": 26.5
+  },
+  {
+   "step": 200,
+   "train_cvar": 6.6940531730651855,
+   "seconds": 35.1
+  },
+  {
+   "step": 250,
+   "train_cvar": 6.656936168670654,
+   "seconds": 43.7
+  },
+  {
+   "step": 300,
+   "train_cvar": 6.518064498901367,
+   "seconds": 52.6
+  },
+  {
+   "step": 350,
+   "train_cvar": 6.586104869842529,
+   "seconds": 61.3
+  },
+  {
+   "step": 400,
+   "train_cvar": 6.4947052001953125,
+   "seconds": 70.0
+  },
+  {
+   "step": 450,
+   "train_cvar": 6.605468273162842,
+   "seconds": 78.7
+  },
+  {
+   "step": 500,
+   "train_cvar": 6.505533218383789,
+   "seconds": 87.9
+  },
+  {
+   "step": 550,
+   "train_cvar": 6.4530253410339355,
+   "seconds": 97.5
+  },
+  {
+   "step": 600,
+   "train_cvar": 6.435000419616699,
+   "seconds": 107.1
+  },
+  {
+   "step": 650,
+   "train_cvar": 6.399688720703125,
+   "seconds": 116.5
+  },
+  {
+   "step": 700,
+   "train_cvar": 6.373116970062256,
+   "seconds": 125.6
+  },
+  {
+   "step": 750,
+   "train_cvar": 6.49416971206665,
+   "seconds": 134.9
+  },
+  {
+   "step": 800,
+   "train_cvar": 6.483505725860596,
+   "seconds": 144.3
+  },
+  {
+   "step": 850,
+   "train_cvar": 6.431972503662109,
+   "seconds": 153.6
+  },
+  {
+   "step": 900,
+   "train_cvar": 6.378353595733643,
+   "seconds": 162.9
+  },
+  {
+   "step": 950,
+   "train_cvar": 6.318239688873291,
+   "seconds": 173.0
+  },
+  {
+   "step": 1000,
+   "train_cvar": 6.3132405281066895,
+   "seconds": 183.0
+  },
+  {
+   "step": 1050,
+   "train_cvar": 6.488336086273193,
+   "seconds": 193.1
+  },
+  {
+   "step": 1100,
+   "train_cvar": 6.419897556304932,
+   "seconds": 203.3
+  },
+  {
+   "step": 1150,
+   "train_cvar": 6.4093217849731445,
+   "seconds": 212.8
+  },
+  {
+   "step": 1200,
+   "train_cvar": 6.41115665435791,
+   "seconds": 222.0
+  },
+  {
+   "step": 1250,
+   "train_cvar": 6.470697402954102,
+   "seconds": 231.5
+  },
+  {
+   "step": 1300,
+   "train_cvar": 6.3128743171691895,
+   "seconds": 240.5
+  },
+  {
+   "step": 1350,
+   "train_cvar": 6.494894027709961,
+   "seconds": 249.4
+  },
+  {
+   "step": 1400,
+   "train_cvar": 6.439520835876465,
+   "seconds": 258.2
+  },
+  {
+   "step": 1450,
+   "train_cvar": 6.48591423034668,
+   "seconds": 267.1
+  },
+  {
+   "step": 1500,
+   "train_cvar": 6.388149261474609,
+   "seconds": 276.2
+  },
+  {
+   "step": 1550,
+   "train_cvar": 6.418595790863037,
+   "seconds": 285.1
+  },
+  {
+   "step": 1600,
+   "train_cvar": 6.456853866577148,
+   "seconds": 293.9
+  },
+  {
+   "step": 1650,
+   "train_cvar": 6.432210922241211,
+   "seconds": 302.8
+  },
+  {
+   "step": 1700,
+   "train_cvar": 6.442793846130371,
+   "seconds": 311.5
+  },
+  {
+   "step": 1750,
+   "train_cvar": 6.46579122543335,
+   "seconds": 320.2
+  },
+  {
+   "step": 1800,
+   "train_cvar": 6.355095386505127,
+   "seconds": 329.1
+  },
+  {
+   "step": 1850,
+   "train_cvar": 6.353148937225342,
+   "seconds": 337.9
+  },
+  {
+   "step": 1900,
+   "train_cvar": 6.384108066558838,
+   "seconds": 347.0
+  },
+  {
+   "step": 1950,
+   "train_cvar": 6.452297210693359,
+   "seconds": 356.4
+  },
+  {
+   "step": 2000,
+   "train_cvar": 6.346136093139648,
+   "seconds": 365.9
+  },
+  {
+   "step": 2050,
+   "train_cvar": 6.4043474197387695,
+   "seconds": 375.1
+  },
+  {
+   "step": 2100,
+   "train_cvar": 6.400594711303711,
+   "seconds": 384.1
+  },
+  {
+   "step": 2150,
+   "train_cvar": 6.386255264282227,
+   "seconds": 393.3
+  },
+  {
+   "step": 2200,
+   "train_cvar": 6.404184341430664,
+   "seconds": 402.2
+  },
+  {
+   "step": 2250,
+   "train_cvar": 6.414741516113281,
+   "seconds": 410.8
+  },
+  {
+   "step": 2300,
+   "train_cvar": 6.479013442993164,
+   "seconds": 419.9
+  },
+  {
+   "step": 2350,
+   "train_cvar": 6.4338059425354,
+   "seconds": 428.9
+  },
+  {
+   "step": 2400,
+   "train_cvar": 6.360593795776367,
+   "seconds": 437.9
+  },
+  {
+   "step": 2450,
+   "train_cvar": 6.396554470062256,
+   "seconds": 446.8
+  },
+  {
+   "step": 2499,
+   "train_cvar": 6.382318496704102,
+   "seconds": 455.9
+  }
+ ]
+}

@@ -1,13 +1,13 @@
-\begin{tabular}{@{}llccc@{}}
+\begin{tabular}{@{}llcccc@{}}
 \toprule
-Hedger & training prior & calibrated-prior loss & uniform-prior loss & worst case \\
+Hedger & trained on & calibrated prior & uniform prior & worst case & worst regret \\
 \midrule
-BSB & -- & 5.38 & 6.35 & 7.45 \\
-Posterior-mean & -- & 5.29 & 6.50 & 7.76 \\
-Oracle & -- & 5.25 & 6.38 & 7.46 \\
-GRU & calibrated & 5.25\,$\pm$\,0.00 & 6.77\,$\pm$\,0.01 & 8.70\,$\pm$\,0.03 \\
-GRU & uniform & 5.43\,$\pm$\,0.01 & 6.38\,$\pm$\,0.01 & 7.75\,$\pm$\,0.01 \\
-MLP & calibrated & 5.25\,$\pm$\,0.00 & 6.69\,$\pm$\,0.01 & 8.44\,$\pm$\,0.01 \\
-MLP & uniform & 5.37\,$\pm$\,0.00 & 6.37\,$\pm$\,0.00 & 7.58\,$\pm$\,0.01 \\
+BSB & -- & 5.38 & 6.35 & 7.45 & 1.14 \\
+Posterior-mean & -- & 5.29 & 6.50 & 7.76 & 0.30 \\
+Oracle & -- & 5.25 & 6.38 & 7.46 & 0.00 \\
+GRU & calibrated prior & 5.25\,$\pm$\,0.00 & 6.77\,$\pm$\,0.01 & 8.70\,$\pm$\,0.03 & 1.24\,$\pm$\,0.03 \\
+GRU & uniform prior & 5.43\,$\pm$\,0.01 & 6.38\,$\pm$\,0.01 & 7.75\,$\pm$\,0.01 & 1.29\,$\pm$\,0.03 \\
+MLP & calibrated prior & 5.25\,$\pm$\,0.00 & 6.69\,$\pm$\,0.01 & 8.44\,$\pm$\,0.01 & 0.99\,$\pm$\,0.01 \\
+MLP & uniform prior & 5.37\,$\pm$\,0.00 & 6.37\,$\pm$\,0.00 & 7.58\,$\pm$\,0.01 & 1.13\,$\pm$\,0.00 \\
 \bottomrule
 \end{tabular}

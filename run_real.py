@@ -80,8 +80,19 @@ def evaluate_real(name: str, calib, scale: str, n_boot: int) -> dict:
                                  std_minus_bsb_ci95=interval(diff),
                                  mean=float(np.mean([m.mean() for kk, m in x.items() if kk == k or kk.startswith(k + "_s")])),
                                  cvar95=float(np.mean([cvar(torch.from_numpy(m)) for kk, m in x.items()
-                                                       if kk == k or kk.startswith(k + "_s")])))
+                                                       if kk == k or kk.startswith(k + "_s")])),
+                                 semidev=float(np.mean([semideviation(m) for kk, m in x.items()
+                                                        if kk == k or kk.startswith(k + "_s")])))
+    # the explicit statistic against the learned one, directly (negative: posterior-mean better)
+    d = boot["posterior_mean"] - boot["gru"]
+    res["posterior_mean_minus_gru"] = dict(std=float(point["posterior_mean"] - point["gru"]), std_ci95=interval(d),
+                                           block_windows=BLOCK, n_boot=n_boot)
     return res
+
+
+def semideviation(x: np.ndarray) -> float:
+    """root mean square of shortfalls above their mean: penalises losses only, not gains."""
+    return float(np.sqrt(np.mean(np.maximum(x - x.mean(), 0.0) ** 2)))
 
 
 if __name__ == "__main__":

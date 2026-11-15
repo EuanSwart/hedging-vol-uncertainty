@@ -1,14 +1,14 @@
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lcccccc@{}}
 \toprule
- & \multicolumn{2}{c}{Butterfly} & \multicolumn{2}{c}{Call} \\
-\cmidrule(lr){2-3}\cmidrule(lr){4-5}
-Hedger & prior & worst case & prior & worst case \\
+ & \multicolumn{3}{c}{Butterfly} & \multicolumn{3}{c}{Call} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+Hedger & prior & worst & regret & prior & worst & regret \\
 \midrule
-BS at prior mean & 7.81 & 9.22 & 5.70 & 10.44 \\
-BSB & 7.48 & 8.17 & 5.38 & 7.45 \\
-Posterior-mean & 7.31 & 8.00 & 5.29 & 7.76 \\
-MLP & 7.36\,$\pm$\,0.01 & 8.28\,$\pm$\,0.14 & 5.25\,$\pm$\,0.00 & 8.44\,$\pm$\,0.01 \\
-GRU & 7.30\,$\pm$\,0.01 & 8.05\,$\pm$\,0.01 & 5.25\,$\pm$\,0.00 & 8.70\,$\pm$\,0.03 \\
-Oracle & 7.25 & 7.87 & 5.25 & 7.46 \\
+BS at prior mean & 7.81 & 9.22 & 4.58 & 5.70 & 10.44 & 2.99 \\
+BSB & 7.48 & 8.17 & 2.90 & 5.38 & 7.45 & 1.14 \\
+Posterior-mean & 7.31 & 8.00 & 0.27 & 5.29 & 7.76 & 0.30 \\
+MLP & 7.36\,$\pm$\,0.01 & 8.28\,$\pm$\,0.14 & 3.63\,$\pm$\,0.14 & 5.25\,$\pm$\,0.00 & 8.44\,$\pm$\,0.01 & 0.99\,$\pm$\,0.01 \\
+GRU & 7.30\,$\pm$\,0.01 & 8.05\,$\pm$\,0.01 & 2.97\,$\pm$\,0.18 & 5.25\,$\pm$\,0.00 & 8.70\,$\pm$\,0.03 & 1.24\,$\pm$\,0.03 \\
+Oracle & 7.25 & 7.87 & 0.00 & 5.25 & 7.46 & 0.00 \\
 \bottomrule
 \end{tabular}

@@ -1,0 +1,15 @@
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+Hedger & trained on & calibrated prior & uniform prior & worst case & worst regret \\
+\midrule
+BSB & -- & 7.48 & 7.39 & 8.17 & 2.90 \\
+Posterior-mean & -- & 7.31 & 7.17 & 8.00 & 0.27 \\
+Oracle & -- & 7.25 & 7.13 & 7.87 & 0.00 \\
+GRU & calibrated prior & 7.30\,$\pm$\,0.01 & 7.29\,$\pm$\,0.03 & 8.05\,$\pm$\,0.01 & 2.97\,$\pm$\,0.18 \\
+GRU & uniform prior & 7.36\,$\pm$\,0.02 & 7.24\,$\pm$\,0.02 & 8.19\,$\pm$\,0.05 & 1.79\,$\pm$\,0.14 \\
+GRU & worst case over $\sigma$ & 7.42\,$\pm$\,0.02 & 7.34\,$\pm$\,0.02 & 7.95\,$\pm$\,0.01 & 2.33\,$\pm$\,0.05 \\
+MLP & calibrated prior & 7.36\,$\pm$\,0.01 & 7.47\,$\pm$\,0.03 & 8.28\,$\pm$\,0.14 & 3.63\,$\pm$\,0.14 \\
+MLP & uniform prior & 7.41\,$\pm$\,0.01 & 7.30\,$\pm$\,0.01 & 8.20\,$\pm$\,0.00 & 2.49\,$\pm$\,0.02 \\
+MLP & worst case over $\sigma$ & 7.45\,$\pm$\,0.00 & 7.38\,$\pm$\,0.00 & 7.99\,$\pm$\,0.01 & 2.62\,$\pm$\,0.00 \\
+\bottomrule
+\end{tabular}

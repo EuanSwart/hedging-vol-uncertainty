@@ -36,7 +36,9 @@ N_PRIOR_TEST = 100_000
 N_GRID_TEST = 50_000
 
 SEEDS = (0, 1, 2)
-PRIORS = ("calibrated", "uniform")   # training priors: the spy-fitted one, and a uniform one with a heavy upper tail
+PRIORS = ("calibrated", "uniform", "minimax")   # training priors: the spy-fitted one, a uniform one with a heavy
+# upper tail, and 'minimax': the worst cvar over the test grid of constant sigma (a robust, not a bayesian, objective)
+MINIMAX_TAU = 0.25         # temperature of the smooth maximum over sigma in the minimax objective (dollars)
 
 
 @dataclass(frozen=True)

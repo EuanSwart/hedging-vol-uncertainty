@@ -107,9 +107,15 @@ def write_latex_tables(sim: dict, real: dict, out) -> None:
     """tabular fragments for the report (the report wraps them in table environments)."""
     rows = [("BS at prior mean", "bs_ref"), ("BSB", "bsb"), ("Posterior-mean", "posterior_mean"),
             ("MLP", "mlp"), ("GRU", "gru"), ("Oracle", "oracle")]
-    lines = [r"\begin{tabular}{@{}lcccc@{}}", r"\toprule",
-             r" & \multicolumn{2}{c}{Butterfly} & \multicolumn{2}{c}{Call} \\", r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
-             r"Hedger & prior & worst case & prior & worst case \\", r"\midrule"]
+    lines = [r"\begin{tabular}{@{}lcccccc@{}}", r"\toprule",
+             r" & \multicolumn{3}{c}{Butterfly} & \multicolumn{3}{c}{Call} \\", r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
+             r"Hedger & prior & worst & regret & prior & worst & regret \\", r"\midrule"]
+
+    def regret(payoff, label):
+        """worst-case regret to the known-sigma hedge: max over the grid of cvar minus the oracle's cvar."""
+        h, o = sim[payoff]["hedgers"], np.array(sim[payoff]["hedgers"]["oracle"]["grid_cvar"])
+        return float(np.max(np.array(h[label]["grid_cvar"]) - o))
+
     for name, key in rows:
         cells = []
         for payoff in ("butterfly", "call"):
@@ -118,15 +124,21 @@ def write_latex_tables(sim: dict, real: dict, out) -> None:
                     cells.append(pm(sim[payoff]["per_kind"][key][metric]))
                 else:
                     cells.append(f"{sim[payoff]['hedgers'][key][metric]:.2f}")
+            if key in ("mlp", "gru"):
+                seeds = [k for k in sim[payoff]["hedgers"] if k.startswith(key + "_s")]
+                v = np.array([regret(payoff, k) for k in seeds])
+                cells.append(pm((v.mean(), v.std(ddof=1) / np.sqrt(len(v)))))
+            else:
+                cells.append(f"{regret(payoff, key):.2f}")
         lines.append(f"{name} & " + " & ".join(cells) + r" \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     (out / "tab_sim.tex").write_text("\n".join(lines) + "\n")
 
     rows = [("BSB", "bsb"), ("BS at VIX", "bs_vix"), ("BS at prior mean", "bs_ref"), ("MLP", "mlp"), ("GRU", "gru"),
             ("Posterior-mean", "posterior_mean")]
-    lines = [r"\begin{tabular}{@{}lcccc@{}}", r"\toprule",
-             r" & \multicolumn{2}{c}{Butterfly} & \multicolumn{2}{c}{Call} \\", r"\cmidrule(lr){2-3}\cmidrule(lr){4-5}",
-             r"Hedger & std & minus BSB & std & minus BSB \\", r"\midrule"]
+    lines = [r"\begin{tabular}{@{}lcccccc@{}}", r"\toprule",
+             r" & \multicolumn{3}{c}{Butterfly} & \multicolumn{3}{c}{Call} \\", r"\cmidrule(lr){2-4}\cmidrule(lr){5-7}",
+             r"Hedger & std & minus BSB & semidev. & std & minus BSB & semidev. \\", r"\midrule"]
     for name, key in rows:
         cells = []
         for payoff in ("butterfly", "call"):
@@ -134,6 +146,7 @@ def write_latex_tables(sim: dict, real: dict, out) -> None:
             cells.append(f"{h['std']:.2f}")
             lo, hi = h["std_minus_bsb_ci95"]
             cells.append("--" if key == "bsb" else f"{h['std_minus_bsb']:+.2f} [{lo:+.2f}, {hi:+.2f}]")
+            cells.append(f"{h['semidev']:.2f}")
         lines.append(f"{name} & " + " & ".join(cells) + r" \\")
     lines += [r"\bottomrule", r"\end{tabular}"]
     (out / "tab_real.tex").write_text("\n".join(lines) + "\n")
